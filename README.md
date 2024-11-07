@@ -15,7 +15,7 @@ This project involves the development of a Python script capable of detecting an
 
 ### 1. Algorithm Selection
 
-The Z-score algorithm is used initially to identify anomalies, with plans to potentially migrate to an Exponential Weighted Moving Average (EWMA) method for improved performance in cases of concept drift and gradual trend changes.
+The Z-score algorithm is used initially to identify anomalies.
 
 ### 2. Data Stream Simulation
 
