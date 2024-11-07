@@ -33,6 +33,7 @@ class AnomalyDetector:
         self.anomaly_rate = 0.95
         self.z_score_threshold = 3
         self.detected_anomalies = 0
+        self.stream_window = 25
         
 
     def main(self):
@@ -59,15 +60,15 @@ class AnomalyDetector:
                 print(f"Error getting stream data: {e} \nSkipping missing value")
 
 
-    def detect_anomaly(self, data, window = 50):
+    def detect_anomaly(self, data):
         '''Uses a double ended queue to implement a sliding window, 
         the sliding window will allow this function to detect anomalies within a certain period
         thereby allowing the algorithm adapt to concept drift (changing trends)'''
-        buffer = deque(maxlen=window) 
+        buffer = deque(maxlen=self.stream_window) 
         anomalies = []
 
         for value in data:
-            if len(buffer) >= window: # wait for one period before calculating anomalies
+            if len(buffer) >= self.stream_window: # wait for one period before calculating anomalies
                 mean = statistics.mean(buffer) # mean calculated incrementally
                 std_dev = statistics.stdev(buffer) # standard deviation calculated incrementally
                 z_score = (value - mean) / std_dev if std_dev > 0 else 0 # z score calculation with error handling for division by zero
